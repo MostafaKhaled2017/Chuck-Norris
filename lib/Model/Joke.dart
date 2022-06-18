@@ -14,7 +14,7 @@ class Joke {
   String? url;
   String? value;
 
-  Joke([value, iconUrl]);
+  Joke({this.value, this.iconUrl});
 
   factory Joke.fromJson(Map<String, dynamic> json) => $JokeFromJson(json);
   Map<String, dynamic> toJson() => $JokeToJson(this);

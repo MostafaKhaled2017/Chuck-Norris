@@ -5,10 +5,10 @@
 part of 'Joke.dart';
 
 Joke $JokeFromJson(Map<String, dynamic> json) => Joke(
-      json['value'],
-      json['icon_url'],
+      value: json['value'],
+      iconUrl: json['icon_url'],
     )
-      ..creationDate = json['creation_date'] as String?
+      ..creationDate = json['created_at'] as String?
       ..url = json['url'] as String?
       ..updatedAt = json['updated_at'] as String?
       ..id = json['id'] as String?
@@ -16,7 +16,7 @@ Joke $JokeFromJson(Map<String, dynamic> json) => Joke(
       ..iconUrl = json['icon_url'] as String?;
 
 Map<String, dynamic> $JokeToJson(Joke instance) => <String, dynamic>{
-      'creation_date': instance.creationDate,
+      'created_at': instance.creationDate,
       'icon_url': instance.iconUrl,
       'value': instance.value,
       'url': instance.url,

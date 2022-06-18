@@ -1,0 +1,139 @@
+import 'dart:convert';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
+import 'package:project2/AdditionalFiles/favorite_jokes.dart';
+import 'package:project2/View/Home.dart';
+import 'package:project2/View/favorites.dart';
+
+import '../AdditionalFiles/global_methods.dart';
+import '../Model/Joke.dart';
+
+class JokesPresenter {
+  BuildContext context;
+  late HomePageState view;
+  Joke joke = Joke();
+
+  //A constructor that takes context and the view
+  JokesPresenter(this.context, this.view);
+
+  // Get a random joke and fetch the json into a joke object
+  void showJoke(String category) async {
+    bool isOnline = await hasNetwork(context);
+
+    String url;
+    if (category == "All categories")
+      url = 'https://api.chucknorris.io/jokes/random';
+    else
+      url = 'https://api.chucknorris.io/jokes/random?category=${category}';
+
+    //Function to fitch the Joke from the API
+
+    void fetchJoke() async {
+      try {
+        var response = await Dio().get(url);
+        joke = Joke.fromJson(jsonDecode(response.toString()));
+        view.updateText(joke.value!, joke.url!, joke.iconUrl!);
+      } catch (e) {
+        //print(e);
+      }
+    }
+
+    if (isOnline) {
+      fetchJoke();
+    } else {
+      onNetworkMissed(context);
+    }
+
+    /*  Fluttertoast.showToast(
+        msg: joke.toString(),
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER // Also possible "TOP" and "CENTER"
+    );*/
+  }
+
+  void openInBrowser() async {
+    bool isOnline = await hasNetwork(context);
+
+    if (isOnline) {
+      if (joke.value == null || joke.value == '') {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Please Load a joke first by pressing Like button'),
+          ),
+        );
+        return;
+      }
+
+      view.openUrl('View Joke');
+    } else {
+      onNetworkMissed(context);
+    }
+  }
+
+  void showPhotos() async {
+    bool isOnline = await hasNetwork(context);
+    if (isOnline) {
+      if (joke.value == null || joke.value == '') {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Please Load a joke first by pressing Like button'),
+          ),
+        );
+        return;
+      }
+
+      view.openUrl('View Photos');
+    } else {
+      onNetworkMissed(context);
+    }
+  }
+
+  /* void goToSearchPage(){
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => SearchPage()));
+  }*/
+
+  void goToFavorites() {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => FavoritesPage()));
+  }
+
+  void addToFavorites() async {
+    bool isOnline = await hasNetwork(context);
+    if (isOnline) {
+      if (joke.value == null || joke.value == '') {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Please Load a joke first by pressing Like button'),
+          ),
+        );
+        return;
+      }
+
+      favoriteJokes.add(joke);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Added to favorites"),
+      ));
+
+      //Adding the joke to firebase
+      final db = FirebaseFirestore.instance;
+      db
+          .collection("favorites")
+          .add(joke.toJson())
+          .then((DocumentReference doc) =>
+              print('DocumentSnapshot added with ID: ${doc.id}'))
+          .onError((error, stackTrace) => print(error));
+    } else {
+      onNetworkMissed(context);
+    }
+  }
+}
+
+//Abstract class with functions we will need to connect with the view
+abstract class View {
+  void updateText(String value, String jokeUrl, String imageUrl);
+
+  void openUrl(String type);
+}

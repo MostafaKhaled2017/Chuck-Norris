@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:project2/Presenter/presenter.dart';
+import 'package:project2/Presenter/home_presenter.dart';
 import 'package:url_launcher/url_launcher.dart' as url_launcher;
 
 class HomePage extends StatefulWidget {
@@ -12,9 +12,31 @@ class HomePage extends StatefulWidget {
 class HomePageState extends State<HomePage> implements View {
   late JokesPresenter presenter;
 
-  late String jokeValue = 'Joke';
-  late String jokeUrl = 'Url';
-  late String photoUrl = 'Url';
+  late String jokeValue = '';
+  late String jokeUrl = '';
+  late String photoUrl = '';
+
+  final categories = [
+    "All categories",
+    "animal",
+    "career",
+    "celebrity",
+    "dev",
+    "explicit",
+    "fashion",
+    "food",
+    "history",
+    "money",
+    "movie",
+    "music",
+    "political",
+    "religion",
+    "science",
+    "sport",
+    "travel"
+  ];
+
+  String? currentCategory = "All categories";
 
   @override
   void initState() {
@@ -24,7 +46,7 @@ class HomePageState extends State<HomePage> implements View {
     presenter = JokesPresenter(context, this);
 
     //Getting the first joke from the API
-    presenter.showJoke();
+    presenter.showJoke(categories[0]);
   }
 
   @override
@@ -37,11 +59,40 @@ class HomePageState extends State<HomePage> implements View {
         width: 1000,
         child: SafeArea(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              Container(
+                margin: EdgeInsets.all(15),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: Colors.black, width: 2)),
+                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                child: DropdownButtonHideUnderline(
+                  child: DropdownButton<String>(
+                    value: currentCategory,
+                    items: categories
+                        .map<DropdownMenuItem<String>>((String value) =>
+                            DropdownMenuItem<String>(
+                                value:
+                                    value, // add this property an pass the _value to it
+                                child: Text(
+                                  value,
+                                )))
+                        .toList(),
+                    onChanged: (category) {
+                      setState(() {
+                        currentCategory = category!;
+                      });
+                      presenter.showJoke(category!);
+                    },
+                    isExpanded: true,
+                    iconSize: 36,
+                    icon: Icon(Icons.arrow_drop_down, color: Colors.black),
+                  ),
+                ),
+              ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(7.8, 7.8, 7.8, 70.0),
+                padding: const EdgeInsets.fromLTRB(15, 70, 15, 125),
                 child: Text(
                   jokeValue,
                   style: TextStyle(
@@ -54,19 +105,34 @@ class HomePageState extends State<HomePage> implements View {
                 ),
               ),
               ElevatedButton(
-                onPressed: presenter.showJoke,
-                style: ElevatedButton.styleFrom(minimumSize: const Size(200.0, 38.0)),
+                onPressed: () => presenter.showJoke(currentCategory!),
+                style: ElevatedButton.styleFrom(
+                    minimumSize: const Size(200.0, 38.0)),
                 child: const Text('Like'),
               ),
               ElevatedButton(
                 onPressed: presenter.openInBrowser,
-                style: ElevatedButton.styleFrom(minimumSize: const Size(200.0, 38.0)),
+                style: ElevatedButton.styleFrom(
+                    minimumSize: const Size(200.0, 38.0)),
                 child: const Text('Open in Browser'),
               ),
               ElevatedButton(
                 onPressed: presenter.showPhotos,
-                style: ElevatedButton.styleFrom(fixedSize: const Size(200.0, 38.0)),
+                style: ElevatedButton.styleFrom(
+                    fixedSize: const Size(200.0, 38.0)),
                 child: const Text('Show Relevant Photos'),
+              ),
+              ElevatedButton(
+                onPressed: presenter.addToFavorites,
+                style: ElevatedButton.styleFrom(
+                    fixedSize: const Size(200.0, 38.0)),
+                child: const Text('Add to Favorites'),
+              ),
+              ElevatedButton(
+                onPressed: presenter.goToFavorites,
+                style: ElevatedButton.styleFrom(
+                    fixedSize: const Size(200.0, 38.0)),
+                child: const Text('Show Favorites'),
               ),
             ],
           ),

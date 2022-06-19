@@ -5,9 +5,10 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:project2/AdditionalFiles/favorite_jokes.dart';
 import 'package:project2/View/home.dart';
 import 'package:project2/View/favorites.dart';
+import 'package:url_launcher/url_launcher.dart' as url_launcher;
+
 
 import '../AdditionalFiles/global_methods.dart';
 import '../Model/Joke.dart';
@@ -73,7 +74,7 @@ class JokesPresenter {
         return;
       }
 
-      view.openUrl('View Joke');
+      openUrl('View Joke');
     } else {
       onNetworkMissed(context);
     }
@@ -91,7 +92,7 @@ class JokesPresenter {
         return;
       }
 
-      view.openUrl('View Photos');
+      openUrl('View Photos');
     } else {
       onNetworkMissed(context);
     }
@@ -143,11 +144,29 @@ class JokesPresenter {
       onNetworkMissed(context);
     }
   }
+
+  void openUrl(String type) {
+    //To show relevant photos to the joke
+    if (type == 'View Photos') {
+      String jokeContent = joke.value!.replaceAll(' ', '+');
+      String photosUrl =
+          'https://www.google.com/search?q=$jokeContent&tbm=isch';
+      url_launcher.launch(
+        photosUrl,
+        forceSafariVC: false,
+      );
+    }
+    // To Open the joke in browser
+    else if (type == 'View Joke') {
+      url_launcher.launch(
+        joke.url!,
+        forceSafariVC: false,
+      );
+    }
+  }
 }
 
 //Abstract class with functions we will need to connect with the view
 abstract class View {
   void updateText(String value, String jokeUrl, String imageUrl);
-
-  void openUrl(String type);
 }

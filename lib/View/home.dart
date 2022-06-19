@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:project2/Presenter/home_presenter.dart';
-import 'package:url_launcher/url_launcher.dart' as url_launcher;
 
 class HomePage extends StatefulWidget {
   Box box;
@@ -14,6 +12,7 @@ class HomePage extends StatefulWidget {
 }
 
 class HomePageState extends State<HomePage> implements View {
+
   late JokesPresenter presenter;
 
   late String jokeValue = '';
@@ -162,24 +161,4 @@ class HomePageState extends State<HomePage> implements View {
     });
   }
 
-  @override
-  void openUrl(String type) {
-    //To show relevant photos to the joke
-    if (type == 'View Photos') {
-      String jokeContent = jokeValue.replaceAll(' ', '+');
-      String photosUrl =
-          'https://www.google.com/search?q=$jokeContent&tbm=isch';
-      url_launcher.launch(
-        photosUrl,
-        forceSafariVC: false,
-      );
-    }
-    // To Open the joke in browser
-    else if (type == 'View Joke') {
-      url_launcher.launch(
-        jokeUrl,
-        forceSafariVC: false,
-      );
-    }
-  }
 }

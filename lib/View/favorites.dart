@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:project2/AdditionalFiles/favorite_jokes.dart';
 import 'package:project2/Widgets/joke_item.dart';
 
 import '../Model/Joke.dart';
@@ -14,8 +13,10 @@ class FavoritesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
+    //Getting the list of favorite Jokes from hive
     List<dynamic> boxContent =  box.get('jokes', defaultValue: <Joke> []);
     List<Joke> jokesList = List<Joke>.from(boxContent);
+
     return Scaffold(
         appBar: AppBar(
           title: Text('Favorite Jokes'),

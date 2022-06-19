@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:project2/Presenter/home_presenter.dart';
 import 'package:url_launcher/url_launcher.dart' as url_launcher;
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  Box box;
+
+  HomePage(this.box);
 
   @override
-  HomePageState createState() => HomePageState();
+  HomePageState createState() => HomePageState(box);
 }
 
 class HomePageState extends State<HomePage> implements View {
@@ -15,6 +18,8 @@ class HomePageState extends State<HomePage> implements View {
   late String jokeValue = '';
   late String jokeUrl = '';
   late String photoUrl = '';
+
+  late final Box box;
 
   final categories = [
     "All categories",
@@ -38,12 +43,14 @@ class HomePageState extends State<HomePage> implements View {
 
   String? currentCategory = "All categories";
 
+  HomePageState(this.box);
+
   @override
   void initState() {
     super.initState();
 
     // Initializing an instance of the constructor
-    presenter = JokesPresenter(context, this);
+    presenter = JokesPresenter(context, this, box);
 
     //Getting the first joke from the API
     presenter.showJoke(categories[0]);

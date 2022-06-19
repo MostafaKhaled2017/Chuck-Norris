@@ -3,8 +3,9 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:project2/AdditionalFiles/favorite_jokes.dart';
-import 'package:project2/View/Home.dart';
+import 'package:project2/View/home.dart';
 import 'package:project2/View/favorites.dart';
 
 import '../AdditionalFiles/global_methods.dart';
@@ -14,9 +15,10 @@ class JokesPresenter {
   BuildContext context;
   late HomePageState view;
   Joke joke = Joke();
+  Box box;
 
   //A constructor that takes context and the view
-  JokesPresenter(this.context, this.view);
+  JokesPresenter(this.context, this.view, this.box);
 
   // Get a random joke and fetch the json into a joke object
   void showJoke(String category) async {
@@ -97,7 +99,7 @@ class JokesPresenter {
 
   void goToFavorites() {
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => FavoritesPage()));
+        context, MaterialPageRoute(builder: (context) => FavoritesPage(box)));
   }
 
   void addToFavorites() async {
@@ -112,7 +114,14 @@ class JokesPresenter {
         return;
       }
 
-      favoriteJokes.add(joke);
+      // Adding the joke to hive
+      List<dynamic> boxContent =  box.get('jokes', defaultValue: <Joke> []);
+      List<Joke> jokesList = List<Joke>.from(boxContent);
+      jokesList.add(joke);
+      box.put('jokes', jokesList);
+
+      //favoriteJokes.add(joke);
+
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text("Added to favorites"),
       ));

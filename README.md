@@ -1,4 +1,4 @@
-The apps shows a chuck norris joke and below it there are 4 buttons:<br>
+This app was developed as part of "Cross Platform Mobile Development with Flutter" course. The apps shows a chuck norris joke and below it there are 4 buttons:<br>
 1- Like Button: For the user to mark that he liked the joke and then the joke is changed to a new one<br>
 2- Open in Browser Button: Opens the current joke in browser<br>
 3- Show Relevant Photos Button: Shows results for photos related to the joke content<br>

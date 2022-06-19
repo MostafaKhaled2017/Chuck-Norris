@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:project2/AdditionalFiles/favorite_jokes.dart';
 import 'package:project2/View/home.dart';
@@ -21,7 +22,7 @@ class JokesPresenter {
   JokesPresenter(this.context, this.view, this.box);
 
   // Get a random joke and fetch the json into a joke object
-  void showJoke(String category) async {
+  void showJoke(String category, bool initialJoke) async {
     bool isOnline = await hasNetwork(context);
 
     String url;
@@ -46,6 +47,10 @@ class JokesPresenter {
       fetchJoke();
     } else {
       onNetworkMissed(context);
+    }
+
+    if(initialJoke){
+      FlutterNativeSplash.remove();
     }
 
     /*  Fluttertoast.showToast(

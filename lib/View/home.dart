@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:project2/Presenter/home_presenter.dart';
 import 'package:url_launcher/url_launcher.dart' as url_launcher;
@@ -47,13 +48,16 @@ class HomePageState extends State<HomePage> implements View {
 
   @override
   void initState() {
+
+    bool initialJoke = true;
+
     super.initState();
 
     // Initializing an instance of the constructor
     presenter = JokesPresenter(context, this, box);
 
     //Getting the first joke from the API
-    presenter.showJoke(categories[0]);
+    presenter.showJoke(categories[0], initialJoke);
   }
 
   @override
@@ -90,7 +94,7 @@ class HomePageState extends State<HomePage> implements View {
                       setState(() {
                         currentCategory = category!;
                       });
-                      presenter.showJoke(category!);
+                      presenter.showJoke(category!, false);
                     },
                     isExpanded: true,
                     iconSize: 36,
@@ -112,7 +116,7 @@ class HomePageState extends State<HomePage> implements View {
                 ),
               ),
               ElevatedButton(
-                onPressed: () => presenter.showJoke(currentCategory!),
+                onPressed: () => presenter.showJoke(currentCategory!, false),
                 style: ElevatedButton.styleFrom(
                     minimumSize: const Size(200.0, 38.0)),
                 child: const Text('Like'),

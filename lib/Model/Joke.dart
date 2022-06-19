@@ -25,7 +25,6 @@ class Joke {
   @HiveField(4)
   String? url;
 
-
   @HiveField(5)
   String? value;
 

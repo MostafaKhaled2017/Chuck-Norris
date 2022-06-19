@@ -14,8 +14,8 @@ I have implemented 2 points from the advanced requirements which are:<br>
 1- Storing favorite jokes in Firebase<br>
 2- Filtering Jokes By Category<br>
 <br>
-**APK Link:** https://drive.google.com/file/d/1VvjFoLsVyKhS5tEqVhzZ5K65FRfkQeLF/view?usp=sharing <br>**
-Screenshots** <br>
+**APK Link:** https://drive.google.com/file/d/1VvjFoLsVyKhS5tEqVhzZ5K65FRfkQeLF/view?usp=sharing <br>
+**Screenshots** <br>
 
 ![Screenshot_2022-06-19-21-42-49-14_c9d3abde10e119fa0fa299418eb9dab6](https://user-images.githubusercontent.com/32040158/174496001-db207909-895a-47fd-806a-6468f8b95223.jpg)
 ![Screenshot_2022-06-19-21-43-10-11_c9d3abde10e119fa0fa299418eb9dab6](https://user-images.githubusercontent.com/32040158/174496013-1455dcab-f9d2-493c-bacd-b8089b2f5d56.jpg)

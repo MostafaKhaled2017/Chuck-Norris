@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:project2/Presenter/home_presenter.dart';
 
+
+late JokesPresenter presenter;
+
 class HomePage extends StatefulWidget {
   Box box;
 
@@ -13,7 +16,6 @@ class HomePage extends StatefulWidget {
 
 class HomePageState extends State<HomePage> implements View {
 
-  late JokesPresenter presenter;
 
   late String jokeValue = '';
   late String jokeUrl = '';
@@ -65,6 +67,7 @@ class HomePageState extends State<HomePage> implements View {
       appBar: AppBar(
         title: const Text('Chuck Norris Jokes'),
       ),
+      drawer: NavDrawer(),
       body: SizedBox(
         width: 1000,
         child: SafeArea(
@@ -138,12 +141,6 @@ class HomePageState extends State<HomePage> implements View {
                     fixedSize: const Size(200.0, 38.0)),
                 child: const Text('Add to Favorites'),
               ),
-              ElevatedButton(
-                onPressed: presenter.goToFavorites,
-                style: ElevatedButton.styleFrom(
-                    fixedSize: const Size(200.0, 38.0)),
-                child: const Text('Show Favorites'),
-              ),
             ],
           ),
         ),
@@ -161,4 +158,33 @@ class HomePageState extends State<HomePage> implements View {
     });
   }
 
+
 }
+
+class NavDrawer extends StatelessWidget{
+
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      child: SafeArea(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            DrawerHeader(
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                      fit: BoxFit.fill,
+                      image: AssetImage('assets/images/app_icon.png'))),
+            ),
+            ListTile(
+              leading: Icon(Icons.wysiwyg_rounded),
+              title: Text('Favorite Jokes'),
+              onTap: () => {presenter.goToFavorites()},
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+

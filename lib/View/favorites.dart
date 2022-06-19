@@ -11,7 +11,8 @@ class FavoritesPage extends StatelessWidget {
   FavoritesPage(this.box);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) {                //TODO: Move the builder method to another class?
+
 
     //Getting the list of favorite Jokes from hive
     List<dynamic> boxContent =  box.get('jokes', defaultValue: <Joke> []);
@@ -26,7 +27,6 @@ class FavoritesPage extends StatelessWidget {
                 child: Text('Favorites List is empty'),
               )
             : ListView.builder(
-                //TODO: Move the builder method to another class?
                 itemBuilder: (BuildContext context, int index) {
                   Joke currentItem = jokesList[index];
 

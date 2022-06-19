@@ -171,6 +171,7 @@ class NavDrawer extends StatelessWidget{
           padding: EdgeInsets.zero,
           children: [
             DrawerHeader(
+              child: Text(''),
               decoration: BoxDecoration(
                   image: DecorationImage(
                       fit: BoxFit.fill,

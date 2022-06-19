@@ -28,8 +28,10 @@ void main() async {
 
   box = await Hive.openBox('box');
 
-  // Pass all uncaught errors from the framework to Crashlytics.
+  // Pass all uncaught errors from the framework to Firebase Crashlytics.
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
+
+  //Running the app
   runApp(ChuckNorrisProject());
 }
 

@@ -8,7 +8,7 @@ The app also has a navigation menu where the user can find the option to see his
 <br>
 The code is written using MVP Design pattern to separate Design code from Logic code. After working on this project, I discovered that there are other patterns that are more recommended to be used with flutter projects such as bloc so I will be using these patterns in my future projects.<br>
 <br>
-I have used Firebase used in my app 2 firebase products which are Crashlytics, and FireStore<br>
+I have used in my app 2 firebase products which are Crashlytics, and FireStore<br>
 <br>
 I have implemented 2 points from the advanced requirements which are:<br>
 1- Storing favorite jokes in Firebase<br>
